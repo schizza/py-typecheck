@@ -38,19 +38,21 @@ def test_any():
 def test_bool_is_not_int():
     assert checked(True, int) is None
     assert is_type(True, int) is False
-    
+
+
 def test_int_is_not_bool():
     assert checked(1, bool) is None
     assert checked(True, bool) is True
     assert checked(False, bool) is False
-    
+
     assert is_type(True, bool) is True
     assert is_type(False, bool) is True
     assert is_type(0, Literal[False]) is False
-    assert is_type(0,False) is False
+    assert is_type(0, False) is False
 
     assert is_type(False, bool) is True
-    
+
+
 def test_int_ok():
     assert checked(0, int) == 0
     assert checked(3, int) == 3
