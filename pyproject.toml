@@ -3,7 +3,7 @@ requires = ["hatchling>=1.25", "hatch-vcs>=0.4"]
 build-backend = "hatchling.build"
 
 [project]
-name = "py-typecheck"
+name = "typecheck-runtime"
 dynamic = ["version"]
 description = "Tiny runtime checker for typing annotations (dict[str,str], list[T], unions, literals) with an Option-like API."
 readme = "README.md"

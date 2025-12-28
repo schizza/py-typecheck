@@ -1,4 +1,4 @@
-# py-typecheck
+# typecheck-runtime 
 
 Tiny runtime checker for typing annotations with an Option-like API.
 
@@ -15,7 +15,7 @@ Just **checks structure and returns refered value** or
 ## Installation
 
 ```bash
-pip install py-typecheck
+pip install typecheck-runtime
 
 Python ≥ 3.10
 ```
