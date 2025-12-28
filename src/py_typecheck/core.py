@@ -92,7 +92,7 @@ def _matches(obj: object, tp: object) -> bool:
 
     # Literal
     if origin is Literal:
-        return obj in args_t
+        return any(obj == lit and type(obj) is type(lit) for lit in args_t)
 
     # list[T]
     if origin is list:
