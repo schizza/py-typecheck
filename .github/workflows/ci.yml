@@ -21,7 +21,7 @@ jobs:
       - run: pip install hatch
       - run: hatch run fmt
       - run: hatch run lint
-      - run: hatch run typechcek
+      - run: hatch run typecheck
       - run: hatch run cov
       - uses: codecov/codecov-action@v5
         with:
