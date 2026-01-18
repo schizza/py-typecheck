@@ -54,6 +54,42 @@ if (d := checked(value, dict[str, int])) is not None:
 
 ---
 
+## `checked_or`
+
+If you want the same runtime check as `checked()`, but with a convenient fallback,
+use `checked_or()`.
+
+- returns the original value if it matches the target type
+- otherwise returns the provided `default`
+
+This is especially handy when you want a safe, typed value in one expression
+without handling `None`.
+
+```python
+from py_typecheck import checked_or
+
+age: object = "not-a-number"
+
+# returns 10 because "not-a-number" is not an int
+value = checked_or(age, int, 10)
+```
+
+Works with typing constructs the same way as `checked()`:
+
+```python
+from py_typecheck import checked_or
+
+payload: object = {"tags": ["a", "b"]}
+
+tags = checked_or(payload, dict[str, list[str]], {"tags": []})["tags"]
+```
+
+Important notes:
+- `checked_or()` relies on `checked()` semantics (including the `bool` vs `int` rule)
+- `default` should already be the correct value you want to use (no coercion happens)
+
+---
+
 ## Supported typing constructs
 
 `py-typecheck` supports common runtime-validable constructs from `typing`:
