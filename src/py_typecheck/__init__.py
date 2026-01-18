@@ -1,3 +1,3 @@
-from .core import checked, is_type
+from .core import checked, checked_or, is_type
 
-__all__ = ["checked", "is_type"]
+__all__ = ["checked", "checked_or", "is_type"]

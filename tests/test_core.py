@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Literal, Protocol
 
-from py_typecheck import checked, is_type
+from py_typecheck import checked, checked_or, is_type
 
 
 class P(Protocol):
@@ -20,6 +20,7 @@ def test_fallback_isinstance_typeerror_returns_false():
 
     assert is_type(obj, tp) is False
     assert checked(obj, tp) is None
+    assert checked_or(obj, tp, 1) == 1
 
 
 def test_fallback_isinstance_with_typing_object():
@@ -72,3 +73,8 @@ def test_nonempty_idiom():
 def test_literal_true():
     assert checked(True, Literal[True]) is True
     assert checked(False, Literal[True]) is None
+    
+def test_or():
+    assert checked_or("string", str, "default") == "string"
+    assert checked_or(1, int, "default") == 1
+    assert checked_or(1, str, "default") == "default"

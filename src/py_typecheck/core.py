@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import typing
 from types import UnionType
-from typing import Literal, TypeGuard, TypeVar, cast, get_args, get_origin
+from typing import Literal, TypeVar, cast, get_args, get_origin, overload
 
 T = TypeVar("T")
 
 
-def is_type(obj: object, tp: object) -> TypeGuard[T]:
+def is_type(obj: object, tp: object) -> bool:
     """Boolean predicate variant (handy for simple ifs).
 
     Return True if `obj` matches the runtime semantics of the type annotation `tp`.
@@ -26,7 +26,13 @@ def is_type(obj: object, tp: object) -> TypeGuard[T]:
     return _matches(obj, tp)
 
 
-def checked(obj: object, tp: object) -> T | None:
+@overload
+def checked(obj: object, tp: type[T]) -> T | None: ...
+@overload
+def checked(obj: object, tp: object) -> object | None: ...
+
+
+def checked(obj: object, tp: object) -> object | None:
     """Return `obj` typed as `T` if it matches `tp`, otherwise return `None`.
 
     This is a convenience wrapper around `is_type()` / `_matches()` that enables a
@@ -48,8 +54,35 @@ def checked(obj: object, tp: object) -> T | None:
         The original object if it matches, otherwise `None`.
     """
     if _matches(obj, tp):
-        return obj  # pyright: ignore[reportReturnType]
+        return obj
     return None
+
+
+@overload
+def checked_or(obj: object, tp: type[T], default: T) -> T: ...
+@overload
+def checked_or(obj: object, tp: object, default: T) -> T: ...
+
+
+def checked_or(obj: object, tp: object, default: T) -> T:
+    """Return `obj` typed as `T` if it matches `tp` otherwise return `default`.
+
+    This is a convenience wrapper around `is_type()` / `_matches()` that enables a
+    common "validate then use" flow without raising exceptions.
+
+    Example:
+        `value = checked(data.get("age"), int, 10)`
+
+    Args:
+        obj: Value to validate.
+        tp: Target type annotation to validate against.
+        default: default value if validation fails
+
+    Returns:
+        The original object if it matches, otherwise `default`.
+    """
+    ret = checked(obj, tp)
+    return default if ret is None else cast(T, ret)
 
 
 def _matches(obj: object, tp: object) -> bool:
